@@ -9,9 +9,6 @@ module.exports = class Solver {
 
   execute () {
     this.board.print();
-
-    let blocks = this.board.blocks;
-
     global.setTimeout(this.loop, 100);
   }
 
@@ -62,7 +59,6 @@ module.exports = class Solver {
     let cells = this.board.findCellsByNumber(this.step_number);
 
     cells.forEach(a => {
-      // a.setMask();
       a.getRow().setMask();
       a.getColumn().setMask();
       a.getBlock().setMask();
@@ -70,23 +66,12 @@ module.exports = class Solver {
   }
 
   executeSolver () {
-    let blocks = this.board.blocks;
-
-    // console.log('Total blocks', blocks.length);
-
-    let cell_lists = blocks.map(a => a.cells);
-
-    // console.log('Cell Lists', cell_lists.map(a => `[${a.map(b => b.getValue()).join(',')}]`));
-
     let solution_blocks = this.board.blocks.filter(a => 
       a.cells.filter(b => !b.isMasked() && !b.hasValue()).length === 1);
 
     
     solution_blocks.forEach(block => {
-      // console.log('Solution block: ', block);
       let solve_cell = block.cells.find(a => !a.isMasked() && !a.hasValue());
-
-      // console.log('Solve cell', solve_cell.x, solve_cell.y);
       solve_cell.solve(this.step_number);
     });
 
